@@ -3,7 +3,7 @@ import sys
 import cv2
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QLabel, QPushButton, QTextEdit, QVBoxLayout,
-    QHBoxLayout, QSlider, QSpinBox, QFileDialog, QGroupBox, QGridLayout, QDoubleSpinBox, QComboBox
+    QHBoxLayout, QSlider, QSpinBox, QFileDialog, QGroupBox, QGridLayout, QDoubleSpinBox
 )
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QPixmap, QImage
