@@ -53,9 +53,9 @@ class UI(QWidget):
         self.slider_filter.valueChanged.connect(self.update_filter)
 
         self.spin_clip_limit = QDoubleSpinBox()
-        self.spin_clip_limit.setRange(1.0, 10.0)
+        self.spin_clip_limit.setRange(0.1, 10.0)
         self.spin_clip_limit.setSingleStep(0.1)
-        self.spin_clip_limit.setValue(2.5)
+        self.spin_clip_limit.setValue(1.5)
         self.spin_clip_limit.valueChanged.connect(self.update_contrast)
 
 
@@ -63,7 +63,7 @@ class UI(QWidget):
         param_layout = QGridLayout()
         param_layout.addWidget(QLabel("滤波强度"), 0, 0)
         param_layout.addWidget(self.slider_filter, 0, 1)
-        param_layout.addWidget(QLabel("对比度裁剪限制"), 2, 0)
+        param_layout.addWidget(QLabel("对比度限制"), 2, 0)
         param_layout.addWidget(self.spin_clip_limit, 2, 1)
 
 
