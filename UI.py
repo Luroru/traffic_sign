@@ -152,7 +152,7 @@ class UI(QWidget):
             #self.timer.stop()
             #self.processor.release()
             print("✅ 视频处理完毕")
-            self.processor.capture.set(cv2.CAP_PROP_POS_FRAMES, 0)  # 👈 关键：重设回第一帧
+            self.processor.capture.set(cv2.CAP_PROP_POS_FRAMES, 0)  # 重设回第一帧
             frame = self.processor.read_next_frame()
             if frame is None:
                 print("❌ 无法重新读取视频第一帧")
