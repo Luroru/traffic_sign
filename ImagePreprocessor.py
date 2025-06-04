@@ -10,7 +10,7 @@ import numpy as np
 class ImagePreprocessor:
     def __init__(self,
                  denoise_strength=0.5,
-                 contrast_clip_limit=1.5,
+                 contrast_clip_limit=2.0,
                  contrast_tile_grid_size=(8, 8),
                  color_balance=True):
         """

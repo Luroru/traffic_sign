@@ -55,7 +55,7 @@ class UI(QWidget):
         self.spin_clip_limit = QDoubleSpinBox()
         self.spin_clip_limit.setRange(0.1, 10.0)
         self.spin_clip_limit.setSingleStep(0.1)
-        self.spin_clip_limit.setValue(1.5)
+        self.spin_clip_limit.setValue(2.0)
         self.spin_clip_limit.valueChanged.connect(self.update_contrast)
 
 
@@ -139,7 +139,7 @@ class UI(QWidget):
         try:
             self.cnt = 0
             self.processor = VideoProcessor(self.video_path)
-            self.timer.start(30)  # ≈ 30fps
+            self.timer.start(33)  # ≈ 30fps
             self.btn_pause.setText("⏸️ 暂停检测")  # 按钮显示“暂停”
             self.is_paused = False
         except Exception as e:
@@ -184,7 +184,7 @@ class UI(QWidget):
         # 转换为 QImage
         image = QImage(frame_rgb.data, w, h, bytes_per_line, QImage.Format_RGB888)
 
-        # 缩放图像以适配标签尺寸（可选）
+        # 缩放图像以适配标签尺寸
         scaled_image = image.scaled(self.video_label.width(), self.video_label.height(), Qt.KeepAspectRatio)
 
         # 设置到 QLabel
