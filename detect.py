@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 
 class Detector:
-    def __init__(self, model_path='runs/train/tt100k/weights/best.pt', conf_thres=0.4, iou_thres=0.45):
+    def __init__(self, model_path='runs/train/tt100k/weights/best.pt', conf_thres=0.5, iou_thres=0.45):
         """
         初始化交通标志检测器
         Args:
