@@ -22,7 +22,7 @@ class VideoProcessor:
             raise ValueError("⚠️ 视频未初始化")
         success, frame = self.capture.read()
         if not success:
-            return None  # 或 raise EOFError("视频结束")
+            return None
         return frame
 
     def release(self):

@@ -10,7 +10,7 @@ from PyQt5.QtGui import QPixmap, QImage
 from datetime import datetime
 from ImagePreprocessor import ImagePreprocessor
 from VideoProcessor import VideoProcessor
-from detect_yolov5_copy import Detector
+from detect import Detector
 
 class UI(QWidget):
     def __init__(self):
@@ -34,18 +34,15 @@ class UI(QWidget):
         self.btn_open = QPushButton("打开视频")
         self.btn_start = QPushButton("开始检测")
         self.btn_pause = QPushButton("暂停检测")
-        self.btn_save = QPushButton("保存结果")
 
         self.btn_open.clicked.connect(self.open_video)
         self.btn_start.clicked.connect(self.start_detection)
         self.btn_pause.clicked.connect(self.pause_detection)
-        self.btn_save.clicked.connect(self.save_results)
 
         control_layout = QVBoxLayout()
         control_layout.addWidget(self.btn_open)
         control_layout.addWidget(self.btn_start)
         control_layout.addWidget(self.btn_pause)
-        control_layout.addWidget(self.btn_save)
         control_group = QGroupBox("控制面板")
         control_group.setLayout(control_layout)
 
@@ -209,9 +206,6 @@ class UI(QWidget):
             self.btn_pause.setText("⏸️ 暂停检测")  # 按钮显示“暂停”
             self.is_paused = False
 
-    def save_results(self):
-        # TODO: 实现结果保存逻辑
-        self.log_result("保存识别结果（待实现）")
 
     def show_frame(self, frame):
         rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
