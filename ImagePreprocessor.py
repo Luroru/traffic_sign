@@ -10,9 +10,10 @@ import numpy as np
 class ImagePreprocessor:
     def __init__(self,
                  denoise_strength=0.5,
-                 contrast_clip_limit=1.5,
+                 contrast_clip_limit=2.0,
                  contrast_tile_grid_size=(8, 8),
-                 color_balance=True):
+                 color_balance=True,
+                 enable_median_filter=False):
         """
         初始化预处理参数
         :param denoise_strength: 去噪强度（h值）
@@ -24,6 +25,7 @@ class ImagePreprocessor:
         self.contrast_clip_limit = contrast_clip_limit
         self.grid_size = contrast_tile_grid_size
         self.enable_color_balance = color_balance
+        self.enable_median_filter = enable_median_filter
 
     def get_gaussian_parameters(self,denoise_strength: float):
         """
@@ -49,10 +51,18 @@ class ImagePreprocessor:
         return ksize, sigmaX
 
     def preprocess(self, frame):
-        # 高斯滤波轻量去噪
-        params = self.get_gaussian_parameters(self.denoise_strength)
-        if params:
-            frame = cv2.GaussianBlur(frame, *params)
+        # # 高斯滤波轻量去噪
+        # params = self.get_gaussian_parameters(self.denoise_strength)
+        # if params:
+        #     frame = cv2.GaussianBlur(frame, *params)
+
+        # 选择滤波方式
+        if self.enable_median_filter:
+            frame = cv2.medianBlur(frame, 3)  # default = 3
+        else:
+            params = self.get_gaussian_parameters(self.denoise_strength)
+            if params:
+                frame = cv2.GaussianBlur(frame, *params)
 
         # CLAHE增强
         lab = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)
@@ -94,8 +104,6 @@ class ImagePreprocessor:
     def update_parameters(self, **kwargs):
         """
         动态更新预处理参数
-        :param kwargs: 可接受的参数名包括：
-                       denoise_strength, contrast_clip_limit,
         """
         for key, value in kwargs.items():
             if hasattr(self, key):
