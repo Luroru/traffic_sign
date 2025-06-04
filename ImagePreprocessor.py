@@ -49,7 +49,7 @@ class ImagePreprocessor:
         return ksize, sigmaX
 
     def preprocess(self, frame):
-        # 轻量去噪
+        # 高斯滤波轻量去噪
         params = self.get_gaussian_parameters(self.denoise_strength)
         if params:
             frame = cv2.GaussianBlur(frame, *params)
