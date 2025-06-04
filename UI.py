@@ -7,13 +7,14 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QPixmap, QImage
-
+from datetime import datetime
 from ImagePreprocessor import ImagePreprocessor
 from VideoProcessor import VideoProcessor
-
+from detect_yolov5_copy import Detector
 
 class UI(QWidget):
     def __init__(self):
+
         super().__init__()
         self.setWindowTitle("实时交通标志检测系统")
         self.setGeometry(100, 100, 1200, 800)
@@ -78,6 +79,7 @@ class UI(QWidget):
 
 
         self.preprocessor = ImagePreprocessor(self.current_filter,self.current_contrast)
+        self.detector = Detector()
 
         # 日志区域
         self.log_text = QTextEdit()
@@ -148,8 +150,6 @@ class UI(QWidget):
 
 
     def update_frame(self):
-        self.cnt = self.cnt+1
-        print(self.cnt)
         frame = self.processor.read_next_frame()
         if frame is None:
             #self.timer.stop()
@@ -164,10 +164,15 @@ class UI(QWidget):
 
         # 图像预处理
         frame = self.preprocessor.preprocess(frame)
-        print("predo ok")
         # 可在此处调用 YOLO 等检测逻辑（frame 输入）
+        frame,text = self.detector.detect(frame)
+        # 获取当前时间并格式化
+        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # 拼接时间和识别结果
+        text_with_time = f"[{current_time}] {text}"
 
         # 显示
+        self.log_result(text_with_time)
         self.show_frame_on_label(frame)
 
 
