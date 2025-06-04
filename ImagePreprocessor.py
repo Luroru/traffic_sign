@@ -10,7 +10,7 @@ import numpy as np
 class ImagePreprocessor:
     def __init__(self,
                  denoise_strength=0.5,
-                 contrast_clip_limit=2.0,
+                 contrast_clip_limit=1.5,
                  contrast_tile_grid_size=(8, 8),
                  color_balance=True):
         """
@@ -49,7 +49,7 @@ class ImagePreprocessor:
         return ksize, sigmaX
 
     def preprocess(self, frame):
-        # 轻量去噪
+        # 高斯滤波轻量去噪
         params = self.get_gaussian_parameters(self.denoise_strength)
         if params:
             frame = cv2.GaussianBlur(frame, *params)
@@ -96,7 +96,6 @@ class ImagePreprocessor:
         动态更新预处理参数
         :param kwargs: 可接受的参数名包括：
                        denoise_strength, contrast_clip_limit,
-                       contrast_tile_grid_size, color_balance
         """
         for key, value in kwargs.items():
             if hasattr(self, key):
