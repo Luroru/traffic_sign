@@ -3,7 +3,7 @@ import sys
 import cv2
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QLabel, QPushButton, QTextEdit, QVBoxLayout,
-    QHBoxLayout, QSlider, QSpinBox, QFileDialog, QGroupBox, QGridLayout, QDoubleSpinBox
+    QHBoxLayout, QSlider, QSpinBox, QFileDialog, QGroupBox, QGridLayout, QDoubleSpinBox, QCheckBox
 )
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QPixmap, QImage
@@ -58,14 +58,17 @@ class UI(QWidget):
         self.spin_clip_limit.setValue(2.0)
         self.spin_clip_limit.valueChanged.connect(self.update_contrast)
 
-
+        # 中值滤波复选框
+        self.checkbox_median_filter = QCheckBox("启用中值滤波")
+        self.checkbox_median_filter.setChecked(False)  # 默认不启用
+        self.checkbox_median_filter.stateChanged.connect(self.update_median_filter)
 
         param_layout = QGridLayout()
         param_layout.addWidget(QLabel("滤波强度"), 0, 0)
         param_layout.addWidget(self.slider_filter, 0, 1)
         param_layout.addWidget(QLabel("对比度限制"), 2, 0)
         param_layout.addWidget(self.spin_clip_limit, 2, 1)
-
+        param_layout.addWidget(self.checkbox_median_filter, 3, 0, 1, 2)
 
         param_group = QGroupBox("参数调整")
         param_group.setLayout(param_layout)
@@ -73,6 +76,7 @@ class UI(QWidget):
         # 另外，定义成员变量保存当前参数，方便调用图像处理函数时读取
         self.current_filter = self.slider_filter.value()/10.0
         self.current_contrast = self.spin_clip_limit.value()
+        self.use_median_filter = self.checkbox_median_filter.isChecked()
 
 
         self.preprocessor = ImagePreprocessor(self.current_filter,self.current_contrast)
@@ -224,6 +228,13 @@ class UI(QWidget):
         self.preprocessor.update_parameters(contrast_clip_limit=self.current_contrast)
         self.log_result(f"对比度限制设置为: {val}")
 
+    def update_median_filter(self, state):
+        self.use_median_filter = (state == Qt.Checked)
+        self.preprocessor.update_parameters(enable_median_filter=self.use_median_filter)
+        if self.use_median_filter:
+            self.log_result("选择中值滤波")
+        else:
+            self.log_result("取消中值滤波")
 
     def log_result(self, message):
         self.log_text.append(message)
