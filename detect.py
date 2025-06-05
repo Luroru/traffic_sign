@@ -44,7 +44,7 @@ class Detector:
             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             results = self.model(rgb_frame)
 
-            # 绘制检测框
+            # 绘制检测结果
             rendered = results.render()
             processed_frame = cv2.cvtColor(rendered[0], cv2.COLOR_RGB2BGR)
 
